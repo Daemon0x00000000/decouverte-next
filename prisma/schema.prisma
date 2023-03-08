@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Tier {
+  // Cascade delete
+  id          String   @id @default(uuid())
+  name        String?
+  color       String?
+  items       Item[]
+  tierlist   Tierlist @relation(fields: [tierlistId], references: [id], onDelete: Cascade)
+  tierlistId  String
+
+}
+
+model Item {
+  id          String  @id @default(uuid())
+  encodedImage String
+  tier        Tier    @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  tierId      String
+  @@index([tierId])
+}
+
+
+model Tierlist {
+  id        String  @id @default(uuid())
+  name      String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  tiers     Tier[]
+  votes     Vote[]
+  createdAt DateTime @default(now())
+}
+
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  salt      String   @unique
+  tierlists Tierlist[]
+  votes     Vote[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([username])
+}
+
+model Vote {
+  id           String @id @default(uuid())
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+  tierlist     Tierlist @relation(fields: [tierlistId], references: [id])
+  tierlistId   String
+  createdAt    DateTime @default(now())
+  @@index([userId])
+  @@index([tierlistId])
+}
+
+// CUID deprecated, UUID par défaut
+
+// TODO: Composite keys
