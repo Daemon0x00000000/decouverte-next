@@ -16,7 +16,8 @@ export default function Layout({children}: Props) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <body>
-            <Header/>
+            {/*@ts-ignore*/}
+                <Header/>
                 <main>
                     {children}
                 </main>
