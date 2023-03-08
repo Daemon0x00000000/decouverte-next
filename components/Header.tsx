@@ -15,7 +15,7 @@ export default async function Header() {
                     <div className={styles.clickable}>
                         <li className={styles.demo}>
                             {!session ? (
-                                <Link href="/demo">
+                                <Link href="/tierlists">
                                     <FaPlusCircle/>
                                     <span>Demo</span>
                                 </Link>
