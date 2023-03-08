@@ -55,6 +55,7 @@ export default function SignUpPage() {
     return (
         <div className={styles.container}>
             <form className={styles.form}>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <h1 className={styles.title}>S'inscrire</h1>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">Email</label>
@@ -69,6 +70,7 @@ export default function SignUpPage() {
                     <input type="password" id="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} />
                 </div>
                 <input type="submit" className={styles.submit} onClick={handleSignUp} value={"Sign Up"} style={{cursor: loading ? "not-allowed" : "pointer"}} disabled={loading} />
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <Link href="/auth/signin">J'ai déjà un compte</Link>
             </form>
         </div>

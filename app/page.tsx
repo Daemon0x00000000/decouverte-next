@@ -10,6 +10,7 @@ export default async function LandingPageAboutTierlistRanker() {
                 <h1 className={styles.title}>Tierlist Ranker</h1>
 
                 <p className={styles.description}>
+                    {/* eslint-disable-next-line react/no-unescaped-entities */}
                     Tierlist Ranker est un site web qui permet de créer des tierlistes et de les partager avec d'autres utilisateurs.
                 </p>
                 <p className={styles.description}>
