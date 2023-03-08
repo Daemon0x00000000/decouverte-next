@@ -45,6 +45,7 @@ export default function SignInPage() {
                     <input type="password" id="password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} />
                 </div>
                 <input type="submit" className={styles.submit} onClick={handleSignIn} value={"Sign In"} style={{cursor: loading ? "not-allowed" : "pointer"}} disabled={loading} />
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <Link href="/auth/signup">Je n'ai pas de compte</Link>
             </form>
         </div>
