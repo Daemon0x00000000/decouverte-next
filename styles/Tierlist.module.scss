@@ -1,0 +1,241 @@
+.tierlistContainer {
+  width: 80vw;
+  height: 65vh;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.tierList {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #402a23;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tierListName {
+  width: 50%;
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 1rem;
+  background: none;
+  border:none;
+    outline: none;
+  display: block;
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+.addTier {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5vh;
+    button {
+      padding: 0.7rem;
+      font-size: 1.5rem;
+      font-weight: 500;
+      background: #e1e1e1;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: 1rem;
+
+      &:hover {
+        background: #ccc;
+      }
+
+    }
+}
+
+.tier {
+  display:flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 100%;
+  height: 15vh;
+  border: 1px solid black;
+
+  .deleteTier {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 3vw;
+    height: 100%;
+    background: #dadada;
+    border-right: 1px solid black;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background: #ccc;
+    }
+  }
+  .tierName {
+    background: #e1e1e1;
+    min-width: 15vw;
+    width: 15vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    font-size: 1.5rem;
+    max-height: 100%;
+
+    &>input {
+        width: 100%;
+        line-height: 1.5;
+        border: none;
+        outline: none;
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-align: center;
+        background: transparent;
+    }
+
+    &>.colorPicker {
+      display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 5vh;
+      padding-left:1rem;
+
+        &>.color {
+            width: 32px;
+            height: 32px;
+            background: #e1e1e1;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+          margin-right: 1rem;
+        }
+    }
+
+  }
+
+  .tierItems {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    max-width: 100%;
+    width: 100%;
+    max-height: 100%;
+    background: green;
+    overflow-x: auto;
+    overflow-y: hidden;
+    user-select: none;
+
+    .items {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      height: 100%;
+      min-width: 100px;
+      width: 100px;
+      display: flex;
+        flex-direction: column;
+      justify-content: end;
+      align-items: center;
+      font-size: 1.5rem;
+      background: white no-repeat center;
+      background-size: cover;
+
+      &>button {
+        width: 100%;
+        height: 3vh;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        font-size: 1.5rem;
+        font-weight: 500;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        // Make blur effect
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+
+  ::-webkit-scrollbar {
+    height: 10px;
+  }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+
+
+  .hovered {
+    background: #e1e1e1;
+  }
+}
+
+
+
+
+.imageUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #000000;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #FFFFFF;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    padding: 1rem;
+  }
+
+  &>p {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: 500;
+    z-index: 1;
+    pointer-events: none;
+
+  }
+}
