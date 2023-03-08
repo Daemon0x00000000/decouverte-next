@@ -1,0 +1,33 @@
+.error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Audiowide', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    line-height: 1;
+    position: relative;
+    overflow: hidden;
+
+
+  .message {
+    color: red;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: 'Audiowide', cursive;
+    padding: 1rem;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+}
+
