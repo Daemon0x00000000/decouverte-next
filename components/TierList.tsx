@@ -4,8 +4,9 @@ import ItemProps from "../types/ItemProps";
 import Tier from "./Tier";
 import styles from "styles/Tierlist.module.scss";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import TierList from "../interfaces/TierListInterface";
 
-export default function TierList({ tierList, setTierList, editable}: TierListProps) {
+export default function TierListCP({ tierList, setTierList, editable}: TierListProps) {
     const [isReady, setIsReady] = useState(false);
     const [colors, setColors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF","#4B0082"]);
 
@@ -19,7 +20,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
                 const copiedTierList = [...tierList.tiers];
                 const [removed] = copiedTierList.splice(source.index, 1);
                 copiedTierList.splice(destination.index, 0, removed);
-                setTierList((prev) => ({
+                setTierList((prev:TierList) => ({
                     ...prev,
                     tiers: copiedTierList
                 }));
@@ -29,7 +30,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
                 const copiedTierList = [...tierList.tiers];
                 const [removed] = copiedTierList.splice(source.index, 1);
                 copiedTierList.splice(destination.index, 0, removed);
-                setTierList((prev) => ({
+                setTierList((prev:TierList) => ({
                     ...prev,
                     tiers: copiedTierList
                 }));
@@ -41,7 +42,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
                 const destItems = [...destTier.items];
                 const [removed] = sourceItems.splice(source.index, 1);
                 destItems.splice(destination.index, 0, removed);
-                setTierList((prev) => ({
+                setTierList((prev:TierList) => ({
                     ...prev,
                     tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                         if (tier.name === source.droppableId) {
@@ -65,7 +66,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
                 const copiedTierList = [...tierList.tiers];
                 const [removed] = copiedTierList.splice(source.index, 1);
                 copiedTierList.splice(destination.index, 0, removed);
-                setTierList((prev) => ({
+                setTierList((prev:TierList) => ({
                     ...prev,
                     tiers: copiedTierList
                 }));
@@ -75,7 +76,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
                 const copiedItems = [...tier.items];
                 const [removed] = copiedItems.splice(source.index, 1);
                 copiedItems.splice(destination.index, 0, removed);
-                setTierList((prev) => ({
+                setTierList((prev:TierList) => ({
                     ...prev,
                     tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                         if (tier.name === source.droppableId) {
@@ -92,7 +93,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     };
 
     const addItem = (tierName: string, item: ItemProps) => {
-        setTierList((prev) => ({
+        setTierList((prev:TierList) => ({
             ...prev,
             tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                 if (tier.name === tierName) {
@@ -107,7 +108,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     };
 
     const changeTierColor = (tierName: string, color: string) => {
-        setTierList((prev) => ({
+        setTierList((prev:TierList) => ({
             ...prev,
             tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                 if (tier.name === tierName) {
@@ -122,7 +123,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     }
 
     const removeItem = (itemName:string) => {
-        setTierList((prev) => ({
+        setTierList((prev:TierList) => ({
             ...prev,
             tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                 return {
@@ -134,7 +135,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     };
 
     const handleTierNameChange = (oldName: string, newName: string) => {
-        setTierList((prev) => ({
+        setTierList((prev:TierList) => ({
             ...prev,
             tiers: prev.tiers.map((tier: { name: any; items: any; }) => {
                 if (tier.name === oldName) {
@@ -149,7 +150,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     };
 
     const removeTier = (tierName: string) => {
-        setTierList((prev) => ({
+        setTierList((prev:TierList) => ({
             ...prev,
             tiers: prev.tiers.filter((tier: { name: any; }) => tier.name !== tierName),
         }));
@@ -159,7 +160,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
     }, []);
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <input type="text" className={styles.tierListName} value={tierList.name} onChange={(e) => setTierList((prev) => ({
+            <input type="text" className={styles.tierListName} value={tierList.name} onChange={(e) => setTierList((prev:TierList) => ({
                 ...prev,
                 name: e.target.value
             }))} disabled={!editable} placeholder={"Nom de la tierlist"} />
@@ -176,7 +177,7 @@ export default function TierList({ tierList, setTierList, editable}: TierListPro
             </Droppable>
             {editable &&
                 <div className={styles.addTier}>
-                    <button onClick={() => setTierList((prev) => ({
+                    <button onClick={() => setTierList((prev:TierList) => ({
                         ...prev,
                         tiers: [...prev.tiers, {
                             name: `T${prev.tiers.length + 1}`,
