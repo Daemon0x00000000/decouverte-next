@@ -1,6 +1,6 @@
 "use client";
 import styles from "styles/Tierlist.module.scss";
-import TierList from "../../components/TierList";
+import TierListCP from "../../components/TierList";
 import {useState} from "react";
 
 
@@ -112,7 +112,7 @@ export default function TierlistPage() {
     });
     return (
         <div className={styles.tierlistContainer}>
-            <TierList tierList={tierList} setTierList={setTierList} editable={true} />
+            <TierListCP tierList={tierList} setTierList={setTierList} editable={true} />
         </div>
     );
 }
