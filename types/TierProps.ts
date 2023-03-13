@@ -1,10 +1,8 @@
-import ItemProps from "./ItemProps";
 
 type TierProps = {
     name: string;
-
-    color: string;
-    items: ItemProps[];
+    colors: string[];
+    index: number;
 }
 
 export default TierProps;

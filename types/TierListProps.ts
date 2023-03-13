@@ -1,8 +1,8 @@
-import TierProps from "./TierProps";
+import TierInterface from "../interfaces/Tier";
 type TierListProps = {
-    tierList: { name: string, tiers: TierProps[] };
+    tierList: { name: string, tiers: TierInterface[] };
 
-    setTierList: any;
+    tierlistDispatch: any;
 
     editable: boolean;
 
