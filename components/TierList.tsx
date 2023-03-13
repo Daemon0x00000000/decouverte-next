@@ -1,10 +1,11 @@
 import TierListProps from "../types/TierListProps";
 import {createContext, useEffect, useState} from "react";
-import Tier from "./Tier";
+import TierCP from "./Tier";
 import styles from "styles/Tierlist.module.scss";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
+import TierListInterface from "../interfaces/TierListInterface";
 
-export const TierlistContext = createContext({} as TierListProps);
+export const TierlistContext = createContext({} as { tierList: TierListInterface; tierlistDispatch: any; editable: boolean; });
 export default function TierListCP({ tierList, tierlistDispatch, editable}: TierListProps) {
     const [isReady, setIsReady] = useState(false);
     const [colors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF","#4B0082"]);
@@ -79,7 +80,11 @@ export default function TierListCP({ tierList, tierlistDispatch, editable}: Tier
     };
 
     const handleAddTier = () => {
-        tierlistDispatch({type: "ADD_TIER", payload: {name: `T${tierList.tiers.length + 1}`, color: colors[tierList.tiers.length % colors.length], items: []}});
+        if (tierList.tiers.length < colors.length) {
+            tierlistDispatch({type: "ADD_TIER", payload: {name: `T${tierList.tiers.length + 1}`, color: colors[tierList.tiers.length % colors.length], items: []}});
+        } else {
+            console.log("Nombre de tier maximum atteint");
+        }
     };
 
     useEffect(() => {
@@ -94,7 +99,7 @@ export default function TierListCP({ tierList, tierlistDispatch, editable}: Tier
                         <div {...provider.droppableProps} ref={provider.innerRef} className={styles.tierList}>
 
                                 {isReady && tierList.tiers.map((tier,index) => (
-                                    <Tier key={tier.name} name={tier.name} colors={colors} index={index} />
+                                    <TierCP key={tier.name} name={tier.name} colors={colors} index={index} />
                                 ))}
                             {provider.placeholder}
                         </div>
@@ -111,6 +116,3 @@ export default function TierListCP({ tierList, tierlistDispatch, editable}: Tier
         </TierlistContext.Provider>
     );
 }
-
-
-// TODO: Refactoring + contexte à mettre car plus pertinent
