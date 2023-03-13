@@ -1,18 +1,18 @@
 
 import Item from "./Item";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import styles from "styles/Tierlist.module.scss";
 import {Draggable, Droppable} from "react-beautiful-dnd";
 import Modal from "./Modal";
 import {FaTrashAlt} from "react-icons/all";
 import TierProps from "../types/TierProps";
 import {TierlistContext} from "./TierList";
-
-export default function Tier({ name, colors, index }: TierProps) {
+import TierInterface from "../interfaces/Tier";
+export default function TierCP({ name, colors, index }: TierProps) {
     const {tierList, tierlistDispatch, editable} = useContext(TierlistContext);
     const [file, setFile] = useState<Blob>();
+    const [tier, setTier] = useState<TierInterface>(tierList.tiers[index]);
     const [activeColor, setActiveColor] = useState(tierList.tiers[index].color);
-    const [tier] = useState(tierList.tiers[index]);
     const [tierName, setTierName] = useState(tier.name);
 
     const handleUpload = (file:Blob) => {
@@ -31,7 +31,7 @@ export default function Tier({ name, colors, index }: TierProps) {
             type: "ADD_ITEM",
             payload: {
                 tierIndex: index,
-                encodedImage
+                encodedImage: encodedImage
             }
         });
     }
@@ -50,10 +50,11 @@ export default function Tier({ name, colors, index }: TierProps) {
             type: "REMOVE_ITEM",
             payload: {
                 tierIndex: index,
-                itemIndex: itemIndex
+                itemIndex
             }
         });
     }
+
     const createItem = () => {
         if (!file) return;
         const reader = new FileReader();
@@ -87,6 +88,10 @@ export default function Tier({ name, colors, index }: TierProps) {
             }
         });
     }
+
+    useEffect(() => {
+        setTier(tierList.tiers[index]);
+    }, [tierList.tiers, index]);
     return (
         <Draggable draggableId={name} index={index} isDragDisabled={!editable}>
             {(provider) => (
@@ -97,7 +102,10 @@ export default function Tier({ name, colors, index }: TierProps) {
                             {editable && colors.map((color) => (
                                 <div key={color} className={styles.color} style={{backgroundColor: color, border: activeColor === color ? "2px solid white" : "none"}} onClick={() => { setActiveColor(color); handleColorChange()}}/>
                             ))}
-                        </div> <input type="text" value={name} onChange={(e) => setTierName(e.target.value)} onBlur={handleTierNameChange} disabled={!editable} placeholder={"Nom du tier"}/>
+                        </div> <input type="text" value={name} onChange={(e) => {
+                        setTierName(e.target.value);
+                        handleTierNameChange();
+                        }} disabled={!editable} placeholder={"Nom du tier"}/>
                         {editable && (
                         <Modal title={"Ajouter un item"} successCallback={createItem}>
                             <div className={styles.imageUpload}>
