@@ -1,9 +1,9 @@
 import TierItem from "./TierItem";
 
-interface Tier {
+interface TierInterface {
     name: string;
     color: string;
     items: TierItem[];
 }
 
-export default Tier;
+export default TierInterface;

@@ -1,9 +1,9 @@
-import Tier from "./Tier";
+import TierInterface from "./Tier";
 
-interface TierList {
+interface TierListInterface {
     id?: string;
     name: string;
-    tiers: Tier[];
+    tiers: TierInterface[];
 }
 
-export default TierList;
+export default TierListInterface;
