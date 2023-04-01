@@ -1,6 +1,18 @@
+$tier-item-count: 12;
+$tier-item-size: 5vh;
+$tier-item-margin: 1vh;
+
+$tier-item-positions: ();
+
+@for $i from 1 through $tier-item-count {
+  $x: random(100) * 1%;
+  $y: random(100) * 1%;
+  $tier-item-positions: append($tier-item-positions, $x $y, comma);
+}
+
 .tierlistContainer {
   width: 80vw;
-  height: 65vh;
+  height: 70vh;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -30,6 +42,13 @@
   display: block;
   margin: 0 auto;
   text-align: center;
+
+  @media (max-width: 750px) {
+      width: 100%;
+  }
+  @media (max-width: 500px) {
+    font-size: 1.5rem;
+  }
 
 }
 
@@ -66,32 +85,26 @@
   width: 100%;
   height: 15vh;
   border: 1px solid black;
+  background: #2b1b17;
 
-  .deleteTier {
-    display: flex;
+  @media (max-width: 750px) {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 3vw;
-    height: 100%;
-    background: #dadada;
-    border-right: 1px solid black;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-      background: #ccc;
-    }
+    height: 30vh;
   }
-  .tierName {
-    background: #e1e1e1;
-    width: 15%;
+
+  @media (max-height: 900px) {
+    height: 35vh;
+  }
+
+  .tierHeader {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: start;
-    align-items: center;
-    font-size: 1.5rem;
-    max-height: 100%;
+    align-items: start;
+    padding:0;
+    margin:0;
+    width: 20%;
+    height: 15vh;
 
     $min-width: 20%;
     $step: 15%;
@@ -103,12 +116,89 @@
     @for $i from 1 through 5 {
       $min-width: $min-width + $step;
 
-      @media (max-width: #{850px - $i * 100px}) {
+      @media (max-width: #{1100px - $i * 100px}) {
         width: $min-width;
       }
     }
 
-    &>input {
+    @media (max-width: 750px) {
+      width: 100%;
+    }
+
+    @media (max-height: 900px) and (max-width: 750px) {
+      height: 35vh;
+    }
+
+
+    .deleteTier {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 30%;
+      height: 100%;
+      border-right: 1px solid black;
+      cursor: pointer;
+      transition: 0.2s;
+
+      $min-width: 30%;
+      $step: 5%;
+      $breakpoints: (
+              200px: 50%,
+              300px: 40%,
+              400px: 35%,
+              1300px: 30%,
+      );
+
+      @for $i from 1 through 4 {
+        $min-width: $min-width + $step;
+        $breakpoint: 1200px - $i * 100px;
+        $breakpoints: map-merge($breakpoints, ($breakpoint: $min-width));
+      }
+
+      @media (max-width: 199px) {
+        width: 50%;
+      }
+
+      @media (min-width: 200px) {
+        @each $breakpoint, $width in $breakpoints {
+          @media (min-width: $breakpoint) and (max-width: #{($breakpoint + 99px)}) {
+            width: $width;
+          }
+        }
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      &:active {
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      &>svg {
+        width: 30%;
+        height: 30%;
+        fill: #fff;
+
+        @media (min-width: 1000px) {
+          width: 50%;
+          height: 50%;
+        }
+      }
+    }
+    .tierName {
+      background: #e1e1e1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      font-size: 1.5rem;
+      height: 100%;
+
+
+      & > input {
         width: 100%;
         line-height: 1.5;
         border: none;
@@ -117,32 +207,33 @@
         font-weight: 500;
         text-align: center;
         background: transparent;
-    }
+      }
 
-    &>button {
-      width: 70%;
-      height: 5vh;
-      border: none;
-      outline: none;
-      font-size: 0.7rem;
-      padding:0.5rem 1rem;
-    }
+      & > button {
+        width: 70%;
+        height: 5vh;
+        border: none;
+        outline: none;
+        font-size: 0.7rem;
+        padding: 0.5rem 1rem;
+      }
 
-    &>.colorPicker {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      width: 100%;
-      height: 5vh;
+      & > .colorPicker {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        height: 5vh;
 
-        &>.color {
-            width: 100%;
-            height: 2.5rem;
-            background: #e1e1e1;
-            border: none;
-            cursor: pointer;
-            outline: none;
+        & > .color {
+          width: 100%;
+          height: 2.5rem;
+          background: #e1e1e1;
+          border: none;
+          cursor: pointer;
+          outline: none;
         }
+      }
     }
 
   }
@@ -154,31 +245,46 @@
     align-items: start;
     max-width: 100%;
     width: 100%;
-    max-height: 100%;
+    height: 15vh;
+    min-height: 15vh;
     overflow-x: auto;
     overflow-y: hidden;
     user-select: none;
+
 
     .items {
       border-left: 1px solid black;
       border-right: 1px solid black;
       height: 100%;
       min-width: 100px;
-      width: 100px;
+      width: calc(100% / 12);
+
+      @media (max-width: 1300px) {
+        width: calc(100% / 10);
+      }
+
+      @media (max-width: 1100px) {
+          width: calc(100% / 8);
+      }
+
+
+
       display: flex;
-        flex-direction: column;
+      flex-direction: column;
       justify-content: end;
       align-items: center;
       font-size: 1.5rem;
       background: white no-repeat center;
       background-size: cover;
 
+      $color: attr(vibrantColor);
+
       &>button {
         width: 100%;
         height: 3vh;
         border: none;
         outline: none;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.1);
         cursor: pointer;
         font-size: 1.5rem;
         font-weight: 500;
@@ -186,11 +292,12 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        // Make blur effect
         backdrop-filter: blur(3px);
         -webkit-backdrop-filter: blur(3px);
+
+
         &:hover {
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(0, 0, 0, 0.2);
         }
       }
     }
