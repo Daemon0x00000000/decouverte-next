@@ -3,7 +3,7 @@ import styles from "styles/Tierlist.module.scss";
 import TierListCP from "../../../components/TierList";
 import {useEffect, useReducer, useState} from "react";
 import TierListReducer from "../../../reducers/TierListReducer";
-import {toast, Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import {useSession} from "next-auth/react";
 import toPng from "dom-to-image";
 
@@ -12,6 +12,7 @@ export default function TierlistPage() {
     const {data: session} = useSession();
     const [loading, setLoading] = useState(true);
     const [tierListRef, setTierListRef] = useState<Node|null>();
+    // @ts-ignore
      const [tierList,tierlistDispatch] = useReducer(TierListReducer,{
          name: "Ma tierlist",
          media: "",
