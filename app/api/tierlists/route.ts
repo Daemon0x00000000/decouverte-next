@@ -19,6 +19,8 @@ export async function POST(req:Request) {
     prisma.tierlist.create({
         data: {
             name: myTierlist.name,
+            // @ts-ignore
+            media: myTierlist.media,
             tiers: {
                 create: myTierlist.tiers.map(tier => {
                     return {
@@ -61,6 +63,8 @@ export async function GET() {
         select: {
             id: true,
             name: true,
+            // @ts-ignore
+            media: true,
             tiers: {
                 select: {
                     id: true,
@@ -125,6 +129,8 @@ export async function PUT(req:Request) {
         },
         data: {
             name: myTierlist.name,
+            // @ts-ignore
+            media: myTierlist.media,
             tiers: {
                 deleteMany: {},
                 create: myTierlist.tiers.map(tier => {

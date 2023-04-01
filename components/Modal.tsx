@@ -12,8 +12,8 @@ type ModalProps = {
 
 export default function Modal({children, title, successCallback}: ModalProps) {
     const [showModal, setShowModal] = useState(false);
-    const [modalTitle, setModalTitle] = useState(title);
-    const [modalContent, setModalContent] = useState(children);
+    const [modalTitle] = useState(title);
+    const [modalContent] = useState(children);
 
     const openModal = () => {
         setShowModal(true);
@@ -34,7 +34,7 @@ export default function Modal({children, title, successCallback}: ModalProps) {
 
     return (
         <>
-            <button className={styles.modalButton} onClick={openModal}><FaPlusCircle /><span>{title}</span></button>
+            <button className={`${styles.modalButton} ${styles.btnAdd}`} onClick={openModal}><FaPlusCircle size={30}/><span className={styles.btnAddText}>{title}</span></button>
             {createPortal(
                 <div className={styles.modal} style={{display: showModal ? "block" : "none"}} onClick={e => {
                     if (e.target === e.currentTarget) {

@@ -4,7 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import styles from "styles/Tierlist.module.scss";
 import {Draggable, Droppable} from "react-beautiful-dnd";
 import Modal from "./Modal";
-import {FaTrashAlt} from "react-icons/all";
+import {FaTimesCircle} from "react-icons/all";
 import TierProps from "../types/TierProps";
 import {TierlistContext} from "./TierList";
 import TierInterface from "../interfaces/Tier";
@@ -96,24 +96,23 @@ export default function TierCP({ name, colors, index }: TierProps) {
         <Draggable draggableId={name} index={index} isDragDisabled={!editable}>
             {(provider) => (
                 <div className={styles.tier} {...provider.draggableProps} {...provider.dragHandleProps} ref={provider.innerRef}>
-                    {editable && <div className={styles.deleteTier} onClick={handleTierRemoval}><FaTrashAlt /></div>}
-                    <div className={styles.tierName} style={{backgroundColor: activeColor}}>
-                        <div className={styles.colorPicker}>
-                            {editable && colors.map((color) => (
-                                <div key={color} className={styles.color} style={{backgroundColor: color, border: activeColor === color ? "2px solid white" : "none"}} onClick={() => { setActiveColor(color); handleColorChange()}}/>
-                            ))}
-                        </div> <input type="text" value={name} onChange={(e) => {
-                        setTierName(e.target.value);
-                        handleTierNameChange();
-                        }} disabled={!editable} placeholder={"Nom du tier"}/>
-                        {editable && (
-                        <Modal title={"Ajouter un item"} successCallback={createItem}>
-                            <div className={styles.imageUpload}>
-                                <input type="file" accept="image/*" placeholder={"Ajouter une image"} onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
-                                <p>Glissez-déposez une image ici ou cliquez pour en sélectionner une (Max 2MB)</p>
-                            </div>
-                        </Modal>
-                        )}
+                    <div className={styles.tierHeader}>
+                        {editable && <div className={styles.deleteTier} onClick={handleTierRemoval}><FaTimesCircle /></div>}
+                        <div className={styles.tierName} style={{backgroundColor: activeColor}}>
+                            <div className={styles.colorPicker}>
+                                {editable && colors.map((color) => (
+                                    <div key={color} className={styles.color} style={{backgroundColor: color, border: activeColor === color ? "2px solid white" : "none"}} onClick={() => { setActiveColor(color); handleColorChange()}}/>
+                                ))}
+                            </div> <input type="text" value={tierName} onChange={(e) => setTierName(e.target.value)} onBlur={handleTierNameChange} disabled={!editable} placeholder={"Nom du tier"}/>
+                            {editable && (
+                            <Modal title={"Ajouter un item"} successCallback={createItem}>
+                                <div className={styles.imageUpload}>
+                                    <input type="file" accept="image/*" placeholder={"Ajouter une image"} onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
+                                    <p>Glissez-déposez une image ici ou cliquez pour en sélectionner une (Max 2MB)</p>
+                                </div>
+                            </Modal>
+                            )}
+                        </div>
                     </div>
                     <Droppable droppableId={name} direction="horizontal" type="item" isDropDisabled={!editable}>
                         {(provider) => (

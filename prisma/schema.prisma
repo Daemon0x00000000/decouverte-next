@@ -33,6 +33,7 @@ model Item {
 model Tierlist {
   id        String  @id @default(uuid())
   name      String
+  media     String
   user      User    @relation(fields: [userId], references: [id])
   userId    String
   tiers     Tier[]

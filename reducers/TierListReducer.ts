@@ -33,7 +33,7 @@ const tierListReducer: Reducer<TierListInterface,Action> = (state, action) => {
                         return {
                             ...tier,
                             items: [...tier.items, {
-                                id: 'ITEM'+tier.items.length,
+                                id: 'ITEM'+Math.random().toString(36).substr(2, 9),
                                 encodedImage: action.payload.encodedImage
                             } as TierItem]
                         }

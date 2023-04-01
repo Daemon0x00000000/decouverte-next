@@ -4,9 +4,10 @@ import TierCP from "./Tier";
 import styles from "styles/Tierlist.module.scss";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import TierListInterface from "../interfaces/TierListInterface";
+import {toast, Toaster} from "react-hot-toast";
 
 export const TierlistContext = createContext({} as { tierList: TierListInterface; tierlistDispatch: any; editable: boolean; });
-export default function TierListCP({ tierList, tierlistDispatch, editable}: TierListProps) {
+export default function TierListCP({ tierList, tierlistDispatch, editable, setTierListRef}: TierListProps) {
     const [isReady, setIsReady] = useState(false);
     const [colors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF","#4B0082"]);
 
@@ -83,7 +84,7 @@ export default function TierListCP({ tierList, tierlistDispatch, editable}: Tier
         if (tierList.tiers.length < colors.length) {
             tierlistDispatch({type: "ADD_TIER", payload: {name: `T${tierList.tiers.length + 1}`, color: colors[tierList.tiers.length % colors.length], items: []}});
         } else {
-            console.log("Nombre de tier maximum atteint");
+            toast.error("Vous ne pouvez pas ajouter plus de tiers");
         }
     };
 
@@ -92,12 +93,16 @@ export default function TierListCP({ tierList, tierlistDispatch, editable}: Tier
     }, []);
     return (
         <TierlistContext.Provider value={{tierList, tierlistDispatch, editable}}>
+            <Toaster
+            />
             <DragDropContext onDragEnd={handleDragEnd}>
                 <input type="text" className={styles.tierListName} value={tierList.name} onChange={(e) => tierlistDispatch({type: "UPDATE_TIERLIST_NAME", payload: {name: e.target.value}})} disabled={!editable} placeholder={"Nom de la tierlist"} />
                 <Droppable droppableId="0" type="tier" isDropDisabled={!editable}>
                     {(provider) => (
-                        <div {...provider.droppableProps} ref={provider.innerRef} className={styles.tierList}>
-
+                        <div {...provider.droppableProps} ref={(ref) => {
+                            provider.innerRef(ref);
+                            setTierListRef(ref);
+                        }} className={styles.tierList}>
                                 {isReady && tierList.tiers.map((tier,index) => (
                                     <TierCP key={tier.name} name={tier.name} colors={colors} index={index} />
                                 ))}
