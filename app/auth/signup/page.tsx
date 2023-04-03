@@ -5,6 +5,7 @@ import {FormEventHandler, useEffect, useState} from "react";
 import {redirect} from "next/navigation";
 import styles from "styles/Signup.module.scss";
 import Link from "next/link";
+import {toast} from "react-hot-toast";
 export default function SignUpPage() {
     const { data: session } = useSession();
     const [user, setUser] = useState({
@@ -22,6 +23,7 @@ export default function SignUpPage() {
     const handleSignUp:FormEventHandler<HTMLInputElement> = (event) => {
         event.preventDefault();
 
+        setLoading(true);
         fetch("/api/register", {
             method: "POST",
             headers: {
@@ -34,21 +36,21 @@ export default function SignUpPage() {
 
             }),
         }).then((res) => {
-            setLoading(true);
             if (res.status === 200) {
                 signIn("credentials", {
                     email: user.email,
                     password: user.password,
-                    redirect: true,
+                    redirect: false,
                     callbackUrl: "/",
-                }).catch(() => {
-                    console.log("error");
-                    setLoading(false);
+                }).then((res) => {
+                    if (res && res.error) {
+                        toast.error("Une erreur est survenue lors de la connexion");
+                    }
                 });
-            } else {
-                setLoading(false);
             }
         }).catch(() => {
+            toast.error("Une erreur est survenue lors de l'inscription");
+        }).finally(() => {
             setLoading(false);
         });
     }

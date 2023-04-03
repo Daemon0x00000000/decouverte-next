@@ -1,0 +1,37 @@
+.grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(100% / 3), 1fr));
+    margin: 0 auto;
+    align-items: center;
+
+    @media (max-width: 1500px) {
+        grid-template-columns: repeat(auto-fit, minmax(calc(100% / 2), 1fr));
+    }
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(auto-fit, minmax(calc(100% / 1), 1fr));
+    }
+
+    /* Scrollbar styles */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #666;
+        border-radius: 20px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #ddd;
+        border-radius: 20px;
+    }
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+

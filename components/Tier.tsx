@@ -74,23 +74,25 @@ export default function TierCP({ name, colors, index }: TierProps) {
             type: "UPDATE_TIER_NAME",
             payload: {
                 tierIndex: index,
-                name: tierName
+                name: tierName,
             }
         });
     }
 
-    const handleColorChange = () => {
+    const handleColorChange = (color:string) => {
+        setActiveColor(color);
         tierlistDispatch({
             type: "UPDATE_TIER_COLOR",
             payload: {
                 tierIndex: index,
-                activeColor
+                color: color,
             }
         });
     }
 
     useEffect(() => {
         setTier(tierList.tiers[index]);
+
     }, [tierList.tiers, index]);
     return (
         <Draggable draggableId={name} index={index} isDragDisabled={!editable}>
@@ -101,7 +103,7 @@ export default function TierCP({ name, colors, index }: TierProps) {
                         <div className={styles.tierName} style={{backgroundColor: activeColor}}>
                             <div className={styles.colorPicker}>
                                 {editable && colors.map((color) => (
-                                    <div key={color} className={styles.color} style={{backgroundColor: color, border: activeColor === color ? "2px solid white" : "none"}} onClick={() => { setActiveColor(color); handleColorChange()}}/>
+                                    <div key={color} className={styles.color} style={{backgroundColor: color, border: activeColor === color ? "2px solid white" : "none"}} onClick={() => { handleColorChange(color)}}/>
                                 ))}
                             </div> <input type="text" value={tierName} onChange={(e) => setTierName(e.target.value)} onBlur={handleTierNameChange} disabled={!editable} placeholder={"Nom du tier"}/>
                             {editable && (
