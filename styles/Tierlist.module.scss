@@ -389,5 +389,10 @@ $tier-item-positions: ();
   &:hover {
     background: #0000aa;
   }
+
+  &:disabled {
+    background: #000099;
+    cursor: not-allowed;
+  }
 }
 

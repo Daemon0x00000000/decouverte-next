@@ -1,18 +1,28 @@
 import TierListProps from "../types/TierListProps";
-import {createContext, useEffect, useState} from "react";
+import {createContext, useCallback, useEffect, useReducer, useState} from "react";
 import TierCP from "./Tier";
 import styles from "styles/Tierlist.module.scss";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import TierListInterface from "../interfaces/TierListInterface";
 import {toast, Toaster} from "react-hot-toast";
+import TierListReducer from "../reducers/TierListReducer";
+import toPng from "dom-to-image";
 
 export const TierlistContext = createContext({} as { tierList: TierListInterface; tierlistDispatch: any; editable: boolean; });
-export default function TierListCP({ tierList, tierlistDispatch, editable, setTierListRef}: TierListProps) {
+export default function TierListCP({tierListObject, session, editable, validateCallback}: TierListProps) {
     const [isReady, setIsReady] = useState(false);
-    const [colors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF","#4B0082"]);
+    const [colors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082"]);
+    const [tierListRef, setTierListRef] = useState<Node | null>();
+    const [tierList, tierlistDispatch] = useReducer(TierListReducer, tierListObject);
+    const [validating, setValidating] = useState(false);
 
+    const convertToImage = useCallback(() => {
+        if (tierListRef) {
+            return toPng.toPng(tierListRef);
+        }
+    }, [tierListRef]);
     const handleDragEnd = (result: DropResult) => {
-        const { source, destination } = result;
+        const {source, destination} = result;
         if (!destination) return;
         if (source.droppableId !== destination.droppableId) {
             if (source.droppableId === "0") {
@@ -82,11 +92,36 @@ export default function TierListCP({ tierList, tierlistDispatch, editable, setTi
 
     const handleAddTier = () => {
         if (tierList.tiers.length < colors.length) {
-            tierlistDispatch({type: "ADD_TIER", payload: {name: `T${tierList.tiers.length + 1}`, color: colors[tierList.tiers.length % colors.length], items: []}});
+            tierlistDispatch({
+                type: "ADD_TIER",
+                payload: {
+                    name: `T${tierList.tiers.length + 1}`,
+                    color: colors[tierList.tiers.length % colors.length],
+                }
+            });
         } else {
             toast.error("Vous ne pouvez pas ajouter plus de tiers");
         }
     };
+
+    const handleValidate = () => {
+        if (validateCallback) {
+            setValidating(true);
+            const media = convertToImage();
+            if (media) {
+                media.then((dataUrl: any) => {
+                    const tierListCopy = {...tierList};
+                    tierListCopy.media = dataUrl;
+                    validateCallback(tierListCopy);
+                    setValidating(false);
+                });
+            } else {
+                toast.error("Une erreur est survenue lors de la création de la tierlist");
+                setValidating(false);
+            }
+        }
+    }
+
 
     useEffect(() => {
         setIsReady(true);
@@ -96,16 +131,20 @@ export default function TierListCP({ tierList, tierlistDispatch, editable, setTi
             <Toaster
             />
             <DragDropContext onDragEnd={handleDragEnd}>
-                <input type="text" className={styles.tierListName} value={tierList.name} onChange={(e) => tierlistDispatch({type: "UPDATE_TIERLIST_NAME", payload: {name: e.target.value}})} disabled={!editable} placeholder={"Nom de la tierlist"} />
+                <input type="text" className={styles.tierListName} value={tierList.name}
+                       onChange={(e) => tierlistDispatch({
+                           type: "UPDATE_TIERLIST_NAME",
+                           payload: {name: e.target.value}
+                       })} disabled={!editable} placeholder={"Nom de la tierlist"}/>
                 <Droppable droppableId="0" type="tier" isDropDisabled={!editable}>
                     {(provider) => (
                         <div {...provider.droppableProps} ref={(ref) => {
                             provider.innerRef(ref);
                             setTierListRef(ref);
                         }} className={styles.tierList}>
-                                {isReady && tierList.tiers.map((tier,index) => (
-                                    <TierCP key={tier.name} name={tier.name} colors={colors} index={index} />
-                                ))}
+                            {isReady && tierList.tiers.map((tier, index) => (
+                                <TierCP key={tier.name} name={tier.name} colors={colors} index={index}/>
+                            ))}
                             {provider.placeholder}
                         </div>
                     )}
@@ -117,6 +156,11 @@ export default function TierListCP({ tierList, tierlistDispatch, editable, setTi
                         </button>
                     </div>
                 }
+                {session && (
+                    <button className={styles.addButton} onClick={handleValidate} disabled={validating}>
+                        Valider
+                    </button>
+                )}
             </DragDropContext>
         </TierlistContext.Provider>
     );
