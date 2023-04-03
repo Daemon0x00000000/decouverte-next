@@ -3,16 +3,12 @@ import TierListInterface from "../../../interfaces/TierListInterface";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 export async function POST(req:Request) {
-    const body = extractBody(req) as Promise<TierListInterface>;
+    const body = await extractBody(req) as Promise<TierListInterface>;
     const myTierlist:TierListInterface = await body;
     const user = await getServerSession(authOptions) as any;
 
     if (!myTierlist) {
-        return new Response("Bad Request", {status: 400})
-    }
-
-    if (!user) {
-        return new Response("Bad Request", {status: 400})
+        return new Response(JSON.stringify({status: 400}), {status: 400})
     }
 
 
@@ -38,28 +34,63 @@ export async function POST(req:Request) {
             },
             user: {
                 connect: {
-                    id: user.id
+                    id: "6847e11d-148c-4664-ae34-3bfe88cf44a7"
                 }
             }
         }
-    }).catch(() => {
-        return new Response("Internal Server Error", {status: 500})
+    }).catch((e) => {
+        console.log(e)
+        return new Response(JSON.stringify({status: 500}), {status: 500})
     })
 
-    return new Response("OK", {status: 200})
+    return new Response(JSON.stringify({status: 201}), {status: 200})
 }
 
-export async function GET() {
-    const user = await getServerSession(authOptions) as any;
+export async function GET(req:Request) {
+    // Si on a un id dans l'url, on renvoie la tierlist correspondante
+    if (req.url.includes("id")) {
+        const user = await getServerSession(authOptions) as any;
+        const id = req.url.split("=")[1];
+        // Get tierlist by id and user
+        const tierlist = await prisma.tierlist.findUnique({
+            where: {
+                id
+            },
+            select: {
+                id: true,
+                name: true,
+                // @ts-ignore
+                media: true,
+                user: {
+                    select: {
+                        id: true
+                    }
+                },
+                tiers: {
+                    select: {
+                        id: true,
+                        name: true,
+                        color: true,
+                        items: {
+                            select: {
+                                id: true,
+                                encodedImage: true
+                            }
+                        }
+                    }
+                }
+            }
+        }).catch(() => {
+            return new Response(JSON.stringify({status: 500}), {status: 500})
+        })
 
-    if (!user) {
-        return new Response("Bad Request", {status: 400})
+        if (!tierlist) {
+            return new Response(JSON.stringify({status: 404}), {status: 404})
+        }
+
+        return new Response(JSON.stringify(tierlist), {status: 200})
     }
-
     const tierlists = await prisma.tierlist.findMany({
-        where: {
-            userId: "e1c1b23b-321f-427f-b444-68a1698585c0"
-        },
         select: {
             id: true,
             name: true,
@@ -80,7 +111,7 @@ export async function GET() {
             }
         }
     }).catch(() => {
-        return new Response("Internal Server Error", {status: 500})
+        return new Response(JSON.stringify({status: 500}), {status: 500})
     })
 
     return new Response(JSON.stringify(tierlists), {status: 200})
@@ -92,11 +123,11 @@ export async function DELETE(req:Request) {
     const user = await getServerSession(authOptions) as any;
 
     if (!id) {
-        return new Response("Bad Request", {status: 400})
+        return new Response(JSON.stringify({status: 400}), {status: 400})
     }
 
     if (!user) {
-        return new Response("Unauthorized", {status: 401})
+        return new Response(JSON.stringify({status: 401}), {status: 401})
     }
 
     await prisma.tierlist.delete({
@@ -104,23 +135,19 @@ export async function DELETE(req:Request) {
             id
         }
     }).catch(() => {
-        return new Response("Internal Server Error", {status: 500})
+        return new Response(JSON.stringify({status: 500}), {status: 500})
     })
 
-    return new Response("OK", {status: 200})
+    return new Response(JSON.stringify({status: 200}), {status: 200})
 }
 
 export async function PUT(req:Request) {
-    const body = extractBody(req) as Promise<TierListInterface>;
+    const body = await extractBody(req) as Promise<TierListInterface>;
     const myTierlist:TierListInterface = await body;
     const user = await getServerSession(authOptions) as any;
 
     if (!myTierlist) {
-        return new Response("Bad Request", {status: 400})
-    }
-
-    if (!user) {
-        return new Response("Unauthorized", {status: 401})
+        return new Response(JSON.stringify({status: 400}), {status: 400})
     }
 
     await prisma.tierlist.update({
@@ -129,7 +156,6 @@ export async function PUT(req:Request) {
         },
         data: {
             name: myTierlist.name,
-            // @ts-ignore
             media: myTierlist.media,
             tiers: {
                 deleteMany: {},
@@ -149,8 +175,8 @@ export async function PUT(req:Request) {
             }
         }
     }).catch(() => {
-        return new Response("Internal Server Error", {status: 500})
+        return new Response(JSON.stringify({status: 500}), {status: 500})
     })
 
-    return new Response("OK", {status: 200})
+    return new Response(JSON.stringify({status: 200}), {status: 200})
 }
