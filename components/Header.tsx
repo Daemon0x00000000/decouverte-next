@@ -14,17 +14,15 @@ export default async function Header() {
                     <li className={styles.item}><Link className={styles.title} href="/">TierList R<FaStar style={{color: "#FFD700",fontSize:"1.2rem"}}/>nker</Link></li>
                     <div className={styles.clickable}>
                         <li className={styles.demo}>
-                            {!session ? (
-                                <Link href="/tierlists">
-                                    <FaPlusCircle/>
-                                    <span>Demo</span>
-                                </Link>
-                            ) : (
-                                <Link href="/demo">
-                                    <FaPlusCircle/>
-                                    <span>Ajouter</span>
-                                </Link>
-                            )}
+                            <Link href="/tierlists/create">
+                                <FaPlusCircle />
+                                <span>{session ? 'Ajouter' : 'Demo'}</span>
+                            </Link>
+                        </li>
+                        <li className={styles.item}>
+                            <Link href="/tierlists">
+                                <span>Liste des tierlists</span>
+                            </Link>
                         </li>
                         <li className={styles.item}>
                             {!session ? (
