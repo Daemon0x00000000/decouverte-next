@@ -4,6 +4,7 @@ import {FormEventHandler, useEffect, useState} from "react";
 import {signIn, useSession} from "next-auth/react";
 import {redirect} from "next/navigation";
 import Link from "next/link";
+import {toast} from "react-hot-toast";
 
 export default function SignInPage() {
     const [loading, setLoading] = useState(false);
@@ -21,15 +22,24 @@ export default function SignInPage() {
 
     const handleSignIn:FormEventHandler<HTMLInputElement> = (event) => {
         event.preventDefault();
+        if (!user.email || !user.password) {
+            toast.error("Veuillez remplir tous les champs");
+            return;
+        }
         setLoading(true);
+
         signIn("credentials", {
             email: user.email,
             password: user.password,
-            redirect: true,
+            redirect: false,
             callbackUrl: "/",
-        }).catch(() => {
-            console.log("error")
-            setLoading(false)
+        }).then((res) => {
+            if (res && res.error) {
+                toast.error("Identifiants incorrects");
+            } else {
+                toast.success("Vous êtes connecté");
+            }
+            setLoading(false);
         });
     }
     return (
