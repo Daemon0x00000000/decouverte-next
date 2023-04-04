@@ -5,6 +5,7 @@ async function getData() {
     // Endpoint is /api/tierlists, method is GET, revalidate is 10 seconds
     const NEXT_PUBLIC_API_URL = process.env.NEXTAUTH_URL;
     const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/tierlists`, {
+        method: "GET",
         next: {
             revalidate: 10
         }
