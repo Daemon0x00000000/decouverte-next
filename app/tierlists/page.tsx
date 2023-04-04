@@ -1,4 +1,3 @@
-"use client";
 import CardTierList from "../../components/CardTierList";
 import styles from "styles/Tierlists.module.scss";
 import TierListInterface from "../../interfaces/TierListInterface";
