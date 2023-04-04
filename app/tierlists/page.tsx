@@ -21,20 +21,4 @@ async function getData() {
 }
 
 export default async function TierlistsPage() {
-    const data = await getData();
-    return (
-        <>
-            <h1 className={styles.title}>Liste des tierlists</h1>
-            <div className={styles.grid}>
-                {data.map((tierlist:TierListInterface, i:number) => (
-                    <CardTierList key={i} data={{
-                        id: tierlist.id as string,
-                        name: tierlist.name,
-                        media: tierlist.media,
-                    }
-                    } loading={false} />
-                ))}
-            </div>
-        </>
-    )
 }
