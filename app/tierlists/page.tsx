@@ -4,6 +4,7 @@ import TierListInterface from "../../interfaces/TierListInterface";
 const getData = async () => {
     // Endpoint is /api/tierlists, method is GET, revalidate is 10 seconds
     const res = await fetch(`https://decouverte-next.vercel.app/api/tierlists`, {
+        method: "GET",
         next: {
             revalidate: 10
         }
