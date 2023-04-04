@@ -1,4 +1,4 @@
-import AuthProvider from "./AuthProvider";
+import AuthProvider from "../../components/AuthProvider";
 import {ReactNode} from "react";
 
 export default function TierlistLayout({children}: {children: ReactNode}) {
