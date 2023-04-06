@@ -24,11 +24,9 @@ const updateTierlist = async (tierlist:TierListInterface) => {
     });
 
     if (!res.ok) {
-        alert(res.status);
         return {success: false, error: res.status};
     }
     const data = await res.json();
-    console.log(data)
     return {success: true, data};
 }
 export default function TierlistPage({params}: PropsParams) {

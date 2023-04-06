@@ -15,10 +15,8 @@ const submitTierlist = async (tierlist:TierListInterface) => {
         body: JSON.stringify(tierlist)
     });
 
-    console.error(JSON.stringify(tierlist))
-    // Check if the response is ok
+    console.error(JSON.stringify(tierlist));
     if (!res.ok) {
-        alert(res.status);
         return {success: false, error: res.status};
     }
     const data = await res.json();
@@ -33,13 +31,20 @@ export default function TierlistPage() {
     }, []);
 
     const handleCreateTierlist = (tierlist:TierListInterface) => {
+        console.log('Voici la tierlist\n' +
+            tierlist.name + '\n' +
+            tierlist.tiers + '\n' +
+            tierlist.media + '\n'
+        );
+        session ?
         submitTierlist(tierlist).then(data => {
             if (data.success) {
                 toast.success("Tierlist créée avec succès");
             } else {
                 toast.error("Une erreur est survenue lors de la création de la tierlist");
             }
-        });
+        }) :
+        toast.error("Vous devez être connecté pour créer une tierlist");
     }
 
     return (
@@ -47,14 +52,12 @@ export default function TierlistPage() {
             <Toaster />
             {!loading && (
                 <div style={{width: "100%", height: "100%"}}>
-                    {session && (
                     <TierListCP tierListObject={{
                         name: "Ma tierlist",
                         media: "",
                         tiers: [
                         ]
                     }} session={session} editable={true} validateCallback={handleCreateTierlist} />
-                    )}
                 </div>
             )}
 
