@@ -76,6 +76,11 @@ $tier-item-positions: ();
       }
 
     }
+
+  @media (max-width: 300px) {
+    flex-direction: column;
+    height: 8vh;
+  }
 }
 
 .tier {
@@ -393,6 +398,10 @@ $tier-item-positions: ();
   &:disabled {
     background: #000099;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
   }
 }
 
