@@ -1,9 +1,8 @@
 import prisma from "../../../lib/prismaClient";
 import {User} from "@prisma/client";
-import {extractBody} from "../../../lib/utils";
 import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
-    const body = extractBody(req);
+    const body = await req.json();
 
     const {email, password} = await body;
 

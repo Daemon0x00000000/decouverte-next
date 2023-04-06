@@ -1,10 +1,10 @@
-import {extractBody} from "../../../lib/utils";
 import TierListInterface from "../../../interfaces/TierListInterface";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
+import {Request} from "next/dist/compiled/@edge-runtime/primitives/fetch";
+
 export async function POST(req:Request) {
-    const body = await extractBody(req) as Promise<TierListInterface>;
-    const myTierlist:TierListInterface = await body;
+    const myTierlist:TierListInterface = await req.json();
     const user = await getServerSession(authOptions) as any;
 
     if (!myTierlist) {
@@ -15,7 +15,6 @@ export async function POST(req:Request) {
     prisma.tierlist.create({
         data: {
             name: myTierlist.name,
-            // @ts-ignore
             media: myTierlist.media,
             tiers: {
                 create: myTierlist.tiers.map(tier => {
@@ -118,8 +117,7 @@ export async function GET(req:Request) {
 }
 
 export async function DELETE(req:Request) {
-    const body = extractBody(req) as Promise<{ id: string }>;
-    const {id} = await body;
+    const {id} = await req.json();
     const user = await getServerSession(authOptions) as any;
 
     if (!id) {
@@ -142,8 +140,7 @@ export async function DELETE(req:Request) {
 }
 
 export async function PUT(req:Request) {
-    const body = await extractBody(req) as Promise<TierListInterface>;
-    const myTierlist:TierListInterface = await body;
+    const myTierlist:TierListInterface = await req.json();
     const user = await getServerSession(authOptions) as any;
 
     if (!myTierlist) {
