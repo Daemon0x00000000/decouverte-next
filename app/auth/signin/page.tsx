@@ -31,7 +31,7 @@ export default function SignInPage() {
         signIn("credentials", {
             email: user.email,
             password: user.password,
-            redirect: false,
+            redirect: true,
             callbackUrl: "/",
         }).then((res) => {
             if (res && res.error) {

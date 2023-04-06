@@ -2,6 +2,7 @@ import Head from "next/head";
 import {ReactNode} from "react";
 import Header from "../components/Header";
 import 'styles/globals.css'
+import AuthProvider from "../components/AuthProvider";
 
 type Props = {
     children: ReactNode
@@ -17,10 +18,12 @@ export default function Layout({children}: Props) {
             </Head>
             <body>
             {/*@ts-ignore*/}
-                <Header/>
-                <main>
-                    {children}
-                </main>
+                <AuthProvider>
+                    <Header/>
+                    <main>
+                        {children}
+                    </main>
+                </AuthProvider>
             </body>
         </html>
     )
