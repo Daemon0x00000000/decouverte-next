@@ -156,11 +156,9 @@ export default function TierListCP({tierListObject, session, editable, validateC
                         </button>
                     </div>
                 }
-                {session && (
-                    <button className={styles.addButton} onClick={handleValidate} disabled={validating}>
-                        Valider
-                    </button>
-                )}
+                <button className={styles.addButton} onClick={handleValidate} disabled={validating}>
+                    Valider
+                </button>
             </DragDropContext>
         </TierlistContext.Provider>
     );
