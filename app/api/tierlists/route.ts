@@ -2,6 +2,7 @@ import TierListInterface from "../../../interfaces/TierListInterface";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 import {Request} from "next/dist/compiled/@edge-runtime/primitives/fetch";
+import prisma from "../../../lib/prismaClient";
 
 export async function POST(req:Request) {
     const myTierlist:TierListInterface = await req.json();
