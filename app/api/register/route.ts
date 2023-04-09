@@ -5,12 +5,7 @@ export async function POST(req: Request) {
     const {email, username, password} = await body;
 
     if (!body) {
-        return {
-            status: 400,
-            body: {
-                message: "Bad request",
-            },
-        };
+        return new Response(JSON.stringify({status: 400}), {status: 400})
     }
     // Hash du password avec bcrypt + salt
     const salt = await bcrypt.genSalt(10);
@@ -24,12 +19,8 @@ export async function POST(req: Request) {
             salt: salt,
         }
     }).catch(() => {
-        return new Response("Internal Server Error", {
-            status: 500,
-        })
+        return new Response(JSON.stringify({status: 500}), {status: 500})
     })
 
-    return new Response("User created", {
-        status: 200,
-    })
+    return new Response(JSON.stringify({status: 201}), {status: 201})
 }
