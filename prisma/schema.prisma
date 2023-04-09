@@ -61,6 +61,7 @@ model Vote {
   userId       String
   tierlist     Tierlist @relation(fields: [tierlistId], references: [id])
   tierlistId   String
+  points       Int  @default(0)
   createdAt    DateTime @default(now())
   @@index([userId])
   @@index([tierlistId])
