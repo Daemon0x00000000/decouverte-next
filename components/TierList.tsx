@@ -4,12 +4,12 @@ import TierCP from "./Tier";
 import styles from "styles/Tierlist.module.scss";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import TierListInterface from "../interfaces/TierListInterface";
-import {toast, Toaster} from "react-hot-toast";
+import {toast} from "react-hot-toast";
 import TierListReducer from "../reducers/TierListReducer";
 import toPng from "dom-to-image";
 
 export const TierlistContext = createContext({} as { tierList: TierListInterface; tierlistDispatch: any; editable: boolean; });
-export default function TierListCP({tierListObject, session, editable, validateCallback}: TierListProps) {
+export default function TierListCP({tierListObject, editable, validateCallback}: TierListProps) {
     const [isReady, setIsReady] = useState(false);
     const [colors] = useState<string[]>(["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082"]);
     const [tierListRef, setTierListRef] = useState<Node | null>();
@@ -128,8 +128,6 @@ export default function TierListCP({tierListObject, session, editable, validateC
     }, []);
     return (
         <TierlistContext.Provider value={{tierList, tierlistDispatch, editable}}>
-            <Toaster
-            />
             <DragDropContext onDragEnd={handleDragEnd}>
                 <input type="text" className={styles.tierListName} value={tierList.name}
                        onChange={(e) => tierlistDispatch({
