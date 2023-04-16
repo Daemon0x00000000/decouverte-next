@@ -48,9 +48,11 @@ export async function POST(req:Request) {
 
 export async function GET(req:Request) {
     // Si on a un id dans l'url, on renvoie la tierlist correspondante
+    const {user} = await getServerSession(authOptions) || {} as any;
     if (req.url.includes("id")) {
         const id = req.url.split("=")[1];
         // Get tierlist by id and user
+        // Must get total votes count
         const tierlist = await prisma.tierlist.findUnique({
             where: {
                 id
@@ -88,12 +90,21 @@ export async function GET(req:Request) {
 
         return new Response(JSON.stringify(tierlist), {status: 200})
     }
+    // get tierlists, score, and vote of user
     const tierlists = await prisma.tierlist.findMany({
         select: {
             id: true,
             name: true,
             media: true,
-            tiers: false
+            votes: {
+                select: {
+                    points: true,
+                },
+                where: {
+                    userId: user ? user.id : '0'
+                }
+            },
+            score: true
         }
     }).catch(() => {
         return new Response(JSON.stringify({status: 500}), {status: 500})
