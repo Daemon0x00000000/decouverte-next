@@ -56,7 +56,7 @@ export default function TierlistPage() {
                         media: "",
                         tiers: [
                         ]
-                    }} session={session} editable={true} validateCallback={handleCreateTierlist} />
+                    }} editable={true} validateCallback={handleCreateTierlist} />
                 </div>
             )}
 

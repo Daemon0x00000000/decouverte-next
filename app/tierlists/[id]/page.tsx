@@ -72,7 +72,7 @@ export default function TierlistPage({params}: PropsParams) {
             session.user && session.user.id === data.user.id &&
         updateMutation.mutate(tierlist) :
         toast.error("Vous devez être connecté pour créer une tierlist");
-    }, [data.user.id, session, updateMutation])
+    }, [data, session, updateMutation])
 
     return (
         <div className={styles.tierlistContainer}>
