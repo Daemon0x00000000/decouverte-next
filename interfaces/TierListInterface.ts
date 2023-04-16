@@ -6,6 +6,10 @@ interface TierListInterface {
 
     media: string;
     tiers: TierInterface[];
+    votes?: {
+        points: string;
+    }[];
+    score?: number;
 }
 
 export default TierListInterface;
