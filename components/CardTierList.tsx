@@ -53,10 +53,9 @@ export default function CardTierList({loading=true, data}: {loading?: boolean, d
     }, [toggleVote, vote]);
 
     useEffect(() => {
-        console.log(data)
         if (isVoted('upvote')) setUpvote.on();
         if (isVoted('downvote')) setDownvote.on();
-    }, [data, data.votes, isVoted, setDownvote, setUpvote]);
+    }, [isVoted, setDownvote, setUpvote]);
 
     return (
         <Flex p={50} alignItems="center" justifyContent="center">
