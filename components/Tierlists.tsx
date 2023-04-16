@@ -11,7 +11,6 @@ const getTierlists = async () => {
     });
 }
 export default function Tierlists() {
-    // Increase cache size to 50 MB
     const {data, isLoading, isError} = useQuery(['tierlists'], getTierlists, {
         keepPreviousData: true,
         staleTime: 10000,
@@ -23,14 +22,24 @@ export default function Tierlists() {
 
     return (
         <HStack flexWrap="wrap" m={"auto"} w={"100%"} justifyContent="center" alignItems="center">
-            {!isLoading && !isError && data && data.map((tierlist:TierListInterface, i:number) => (
-                <CardTierList key={i} data={{
-                    id: tierlist.id as string,
-                    name: tierlist.name,
-                    media: tierlist.media,
-                }
-                } loading={isLoading} />
-            ))}
+            {!isLoading && !isError && data && data
+                .sort((a: TierListInterface, b: TierListInterface) => (b.score ? b.score : 0) - (a.score ? a.score : 0))
+                .map((tierlist: TierListInterface, i: number) => (
+                    <CardTierList
+                        key={i}
+                        data={{
+                            id: tierlist.id as string,
+                            name: tierlist.name,
+                            media: tierlist.media,
+                            votes: tierlist.votes as { points: string }[],
+                            score: tierlist.score as number,
+                        }}
+                        loading={isLoading}
+                    />
+                ))
+            }
+
+
         </HStack>
 
     )
