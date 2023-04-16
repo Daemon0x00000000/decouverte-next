@@ -2,7 +2,7 @@ import Head from "next/head";
 import {ReactNode} from "react";
 import Header from "../components/Header";
 import 'styles/globals.css'
-import AuthProvider from "../components/AuthProvider";
+import Providers from "./Providers";
 
 type Props = {
     children: ReactNode
@@ -17,13 +17,12 @@ export default function Layout({children}: Props) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <body>
-            {/*@ts-ignore*/}
-                <AuthProvider>
+                <Providers>
                     <Header/>
                     <main>
                         {children}
                     </main>
-                </AuthProvider>
+                </Providers>
             </body>
         </html>
     )

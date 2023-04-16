@@ -2,7 +2,7 @@
 import styles from "styles/Tierlist.module.scss";
 import TierListCP from "../../../components/TierList";
 import {useEffect, useState} from "react";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {useSession} from "next-auth/react";
 import TierListInterface from "../../../interfaces/TierListInterface";
 
@@ -49,7 +49,6 @@ export default function TierlistPage() {
 
     return (
         <div className={styles.tierlistContainer}>
-            <Toaster />
             {!loading && (
                 <div style={{width: "100%", height: "100%"}}>
                     <TierListCP tierListObject={{
@@ -57,7 +56,7 @@ export default function TierlistPage() {
                         media: "",
                         tiers: [
                         ]
-                    }} session={session} editable={true} validateCallback={handleCreateTierlist} />
+                    }} editable={true} validateCallback={handleCreateTierlist} />
                 </div>
             )}
 

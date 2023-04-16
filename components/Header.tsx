@@ -15,7 +15,6 @@ import {
     useDisclosure,
     useColorModeValue,
     Stack,
-    ChakraProvider,
     Skeleton, SkeletonCircle,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon, SettingsIcon } from '@chakra-ui/icons';
@@ -51,7 +50,7 @@ export default function Header() {
         }
     ]
     return (
-        <ChakraProvider>
+        <>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
                 <Flex h={20} alignItems={'center'} justifyContent={'space-between'}>
                     <IconButton
@@ -152,6 +151,6 @@ export default function Header() {
                     </Box>
                 ) : null}
             </Box>
-        </ChakraProvider>
+        </>
     );
 }
