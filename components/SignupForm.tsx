@@ -74,7 +74,7 @@ export const SignupForm = (signupFormProps: SignupFormProps) => {
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button
-                                loadingText="Submitting"
+                                loadingText="Soumission"
                                 size="lg"
                                 bg={'blue.400'}
                                 color={'white'}
